@@ -7,6 +7,7 @@ class AdvertisementStatusChoices(models.TextChoices):
 
     OPEN = "OPEN", "Открыто"
     CLOSED = "CLOSED", "Закрыто"
+    DRAFT = "DRAFT", "Черновик"
 
 
 class Advertisement(models.Model):
@@ -30,7 +31,20 @@ class Advertisement(models.Model):
     )
 
 
-class Favorits(models.Model):
-    users_fk = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorits')
-    advertisements_fk = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='favorits')
+class FavoritesStatusChoices(models.TextChoices):
+
+    IN_FAVORITES = "IN FAVORITES", "В избранном"
+    NOT_IN_FAVORITES = "NOT IN FAVORITES ", "Не в избранном"
+
+
+class Favorites(models.Model):
+    status = models.TextField(
+        choices=FavoritesStatusChoices.choices,
+        default=FavoritesStatusChoices.NOT_IN_FAVORITES
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, related_name='favorites')
+
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='favorites')
+
+

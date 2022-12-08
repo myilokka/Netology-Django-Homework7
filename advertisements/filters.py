@@ -1,6 +1,7 @@
 import django_filters
 from django_filters import rest_framework as filters
-from advertisements.models import Advertisement, Favorits
+
+from advertisements.models import Advertisement
 
 
 class AdvertisementFilter(filters.FilterSet):
@@ -14,13 +15,3 @@ class AdvertisementFilter(filters.FilterSet):
     class Meta:
         model = Advertisement
         fields = ['created_at', 'updated_at', 'status', 'creator__id']
-
-
-class FavoritsFilter(filters.FilterSet):
-    users_fk = django_filters.NumberFilter(field_name='users_fk')
-
-    class Meta:
-        model = Favorits
-        fields = ['users_fk']
-
-
