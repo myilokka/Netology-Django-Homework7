@@ -27,6 +27,8 @@ class AdvertisementViewSet(ModelViewSet):
         """Получение прав для действий."""
         if self.action in ["create", "update", "partial_update", "destroy"]:
             return [IsAuthenticated(), IsOwnerOrAdminOrReadOnly()]
+        if self.action in ['view_favorites', 'add_favorites']:
+            return [IsAuthenticated()]
         return []
 
     @action(detail=True, methods=["post"], url_path=r'favorites')

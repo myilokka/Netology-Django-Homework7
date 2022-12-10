@@ -9,7 +9,6 @@ class AdvertisementFilter(filters.FilterSet):
     created_at = filters.DateFromToRangeFilter()
     updated_at = filters.DateFromToRangeFilter()
 
-    creator = django_filters.NumberFilter(field_name='creator__id')
     status = django_filters.CharFilter(field_name='status', lookup_expr='icontains')
 
     class Meta:
