@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from advertisements.views import AdvertisementViewSet, FavoritsViewSet
+from advertisements.views import AdvertisementViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('advertisements', AdvertisementViewSet)
-router.register('favorits', FavoritsViewSet)
+router.register('advertisements', AdvertisementViewSet, basename='advertisements')
 
 
 urlpatterns = [

@@ -29,22 +29,17 @@ class Advertisement(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
-
-
-class FavoritesStatusChoices(models.TextChoices):
-
-    IN_FAVORITES = "IN FAVORITES", "В избранном"
-    NOT_IN_FAVORITES = "NOT IN FAVORITES ", "Не в избранном"
+    favorites = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Favorites', related_name='favorites_adv')
 
 
 class Favorites(models.Model):
-    status = models.TextField(
-        choices=FavoritesStatusChoices.choices,
-        default=FavoritesStatusChoices.NOT_IN_FAVORITES
-    )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE, related_name='favorites')
 
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='favorites')
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('owner', 'advertisement'), name = 'unique_favorite_adv')]
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE, related_name='favorites_adv_inner')
+
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='favorites_user_inner')
 
 

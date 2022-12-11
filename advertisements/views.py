@@ -31,10 +31,13 @@ class AdvertisementViewSet(ModelViewSet):
             return [IsAuthenticated()]
         return []
 
-    @action(detail=True, methods=["post"], url_path=r'favorites')
+    @action(detail=True, url_path=r'favorites')
     def add_favorites(self, request, pk):
+        # _mutable = request.data._mutable
+        # request.data._mutable = True
         request.data['advertisement'] = self.get_object()
         request.data['owner'] = self.request.user
+        # request.data._mutable = _mutable
         serializer = FavoritesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.advertisement_validate(request.data)
@@ -46,7 +49,7 @@ class AdvertisementViewSet(ModelViewSet):
 
     @action(detail=False, url_path=r'all_favorites')
     def view_favorites(self, request):
-        favorites = Favorites.objects.filter(Q(status="IN FAVORITES") & Q(owner=self.request.user)).all()
+        favorites = Favorites.objects.filter(owner=self.request.user).all()
         serializer = FavoritesSerializer(data=favorites, many=True)
         serializer.is_valid()
         return Response(serializer.data, status=status.HTTP_200_OK)

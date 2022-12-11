@@ -57,7 +57,7 @@ class FavoritesSerializer(serializers.ModelSerializer):
         creator = advertisement.creator_id
         owner = self.initial_data["owner"].id
         if creator == owner:
-            raise ValidationError ('Вы не можете добавлять в избранное свои объявления!')
+            raise ValidationError('Вы не можете добавлять в избранное свои объявления!')
         return self.initial_data
 
     def advertisement_validate(self, data):
